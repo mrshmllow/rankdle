@@ -6,6 +6,7 @@ import type { SupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/db_types";
 import { createServerClient } from "@/lib/supabase-server";
 import Link from "next/link";
+import { Analytics } from '@vercel/analytics/react'
 
 export type TypedSupabaseClient = SupabaseClient<Database>;
 
@@ -27,6 +28,7 @@ export default async function RootLayout({
 
 	return (
 		<html lang="en" className="bg-ctp-base text-ctp-text">
+			<Analytics />
 
 			<body>
 				<SupabaseProvider session={session}>
