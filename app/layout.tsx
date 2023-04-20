@@ -6,7 +6,6 @@ import type { SupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/db_types";
 import { createServerClient } from "@/lib/supabase-server";
 import Link from "next/link";
-import Script from "next/script";
 
 export type TypedSupabaseClient = SupabaseClient<Database>;
 
@@ -28,7 +27,6 @@ export default async function RootLayout({
 
 	return (
 		<html lang="en" className="bg-ctp-base text-ctp-text">
-			<Script src="https://www.youtube.com/iframe_api" />
 
 			<body>
 				<SupabaseProvider session={session}>
