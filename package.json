@@ -21,6 +21,7 @@
     "cva": "npm:class-variance-authority@^0.5.2",
     "eslint": "8.38.0",
     "eslint-config-next": "13.3.0",
+    "formik": "^2.2.9",
     "lodash": "^4.17.21",
     "next": "13.3.0",
     "pluralize": "^8.0.0",
@@ -31,7 +32,9 @@
     "sharp": "^0.32.0",
     "supabase": "^1.41.1",
     "tailwindcss": "3.3.1",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "zod": "^3.21.4",
+    "zod-formik-adapter": "^1.2.0"
   },
   "devDependencies": {
     "@catppuccin/tailwindcss": "^0.1.1",
