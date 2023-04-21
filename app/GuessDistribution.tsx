@@ -80,7 +80,6 @@ export default function GuessDistribution({ clip_id }: { clip_id: number }) {
             <Image
               src={getImageData(Rank[rank])}
               alt={`Valorant ${rank} icon`}
-              placeholder="blur"
               className="mx-auto w-[30px] h-[30px]"
               width={30}
               height={30}
