@@ -19,7 +19,7 @@ export default function Login() {
           await supabase.auth.signInWithOAuth({
             provider: "discord",
             options: {
-              redirectTo: "/submit",
+              redirectTo: "/complete",
             },
           });
         }}

@@ -1,11 +1,10 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { getCookie } from "tiny-cookie";
 
 export default function Complete() {
-  const searchParams = useSearchParams();
   const router = useRouter();
 
   useEffect(() => {
@@ -13,11 +12,7 @@ export default function Complete() {
       const token = getCookie("supabase-auth-token");
 
       if (token) {
-        router.push(
-          searchParams.get("redirect")
-            ? searchParams.get("redirect")!
-            : "/create"
-        );
+        router.push("/submit");
       }
     }, 500);
     return () => clearInterval(interval);
