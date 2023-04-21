@@ -144,7 +144,7 @@ export default function Home() {
                 ) : (
                   <FireIconSolid
                     key={i}
-                    className="w-7 h-7 text-ctp-red mx-auto animate-streak"
+                    className="w-7 h-7 text-ctp-red mx-auto animate-streak -z-10"
                   />
                 )
               ) : i !== 3 - 1 ? (
