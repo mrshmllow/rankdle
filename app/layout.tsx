@@ -7,6 +7,7 @@ import { Database } from "@/db_types";
 import { createServerClient } from "@/lib/supabase-server";
 import Link from "next/link";
 import { Analytics } from "@vercel/analytics/react";
+import { VideoCameraIcon } from "@heroicons/react/24/outline";
 
 export type TypedSupabaseClient = SupabaseClient<Database>;
 
@@ -41,9 +42,10 @@ export default async function RootLayout({
 
             <Link
               href="/submit"
-              className="rounded-md bg-ctp-surface0 py-2 px-4 place-self-end"
+              className="rounded-md bg-ctp-surface0 py-2 px-4 place-self-end inline-flex items-center gap-2"
             >
               Upload Clip
+              <VideoCameraIcon className="h-5 w-5" />
             </Link>
           </nav>
 

@@ -13,6 +13,16 @@ module.exports = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
     },
+    keyframes: {
+      streak: {
+        "50%": {
+          filter: "saturate(150%);",
+        },
+      },
+    },
+    animation: {
+      streak: "streak 1s ease-in-out infinite",
+    },
   },
   plugins: [
     require("@catppuccin/tailwindcss")({

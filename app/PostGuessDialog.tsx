@@ -62,10 +62,16 @@ export default function PostGuessDialog({
           </div>
 
           <p className="text-center">
-            You gained{" "}
-            <strong>
-              {calculateStars(guess, answer)} {pluralize("star", gainedStars)}
-            </strong>
+            {gainedStars === 0 ? (
+              <>You got no stars</>
+            ) : (
+              <>
+                You gained{" "}
+                <strong>
+                  {gainedStars} {pluralize("star", gainedStars)}
+                </strong>
+              </>
+            )}
           </p>
 
           <Suspense
