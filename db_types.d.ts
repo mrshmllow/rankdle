@@ -34,6 +34,7 @@ export interface Database {
           created_at: string | null;
           id: number;
           tracker_id: string;
+          user_id: string;
           val_id: string;
           youtube_id: string;
         };
@@ -41,6 +42,7 @@ export interface Database {
           created_at?: string | null;
           id?: number;
           tracker_id: string;
+          user_id: string;
           val_id: string;
           youtube_id: string;
         };
@@ -48,6 +50,7 @@ export interface Database {
           created_at?: string | null;
           id?: number;
           tracker_id?: string;
+          user_id?: string;
           val_id?: string;
           youtube_id?: string;
         };
@@ -83,6 +86,10 @@ export interface Database {
       [_ in never]: never;
     };
     Functions: {
+      delete_user: {
+        Args: Record<PropertyKey, never>;
+        Returns: undefined;
+      };
       get_daily_rankdles: {
         Args: Record<PropertyKey, never>;
         Returns: {
