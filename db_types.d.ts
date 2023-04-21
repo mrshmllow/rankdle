@@ -15,18 +15,21 @@ export interface Database {
           created_at: string | null;
           id: number;
           rank: Database["public"]["Enums"]["valorant_rank"];
+          user_id: string | null;
         };
         Insert: {
           clip_id: number;
           created_at?: string | null;
           id?: number;
           rank: Database["public"]["Enums"]["valorant_rank"];
+          user_id?: string | null;
         };
         Update: {
           clip_id?: number;
           created_at?: string | null;
           id?: number;
           rank?: Database["public"]["Enums"]["valorant_rank"];
+          user_id?: string | null;
         };
       };
       proposed: {

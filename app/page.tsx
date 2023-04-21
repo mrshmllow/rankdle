@@ -19,7 +19,7 @@ const getRankdles = cache(async (supabase: TypedSupabaseClient) => {
 });
 
 export default function Home() {
-  const { supabase } = useSupabase();
+  const { supabase, session } = useSupabase();
   const rankdles = use(getRankdles(supabase));
 
   const [current, setCurrent] = usePersistentState("current", 0, true);
@@ -53,6 +53,7 @@ export default function Home() {
       clip_id: rankdles[current].id,
       // @ts-ignore
       rank: Rank[selectedRank],
+      user_id: session?.user.id,
     });
 
     setLoading(false);
