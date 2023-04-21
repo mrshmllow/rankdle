@@ -1,6 +1,6 @@
 "use client";
 
-import { cache, createRef, use, useEffect, useState } from "react";
+import { cache, use, useEffect, useState } from "react";
 import PostGuessDialog from "./PostGuessDialog";
 import { Rank } from "@/lib/types";
 import { calculateStars } from "@/lib/stars";
@@ -44,7 +44,6 @@ export default function Home() {
   const [gameEnd, setGameEnd] = usePersistentState("end", false, true);
   const [stars, setStars] = usePersistentState("stars", 0, true);
   const [streak, setStreak] = usePersistentState("streak", 0, false);
-  const player = createRef<HTMLIFrameElement>();
   const [loading, setLoading] = useState(false);
   const [playedToday, setPlayedToday] = usePersistentState(
     "playedToday",
@@ -163,7 +162,6 @@ export default function Home() {
             title={`Rankdle DAY Step ${current + 1}`}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen={false}
-            ref={player}
           />
 
           <RankButtons

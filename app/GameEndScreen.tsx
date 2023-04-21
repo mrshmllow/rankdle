@@ -56,7 +56,7 @@ export default function GameEndScreen({
 
       <hr className="h-px my-3 bg-ctp-surface0 border-0" />
 
-      <h1 className="text-2xl font-bold">Today's Clips</h1>
+      <h1 className="text-2xl font-bold">Todays Clips</h1>
 
       <div className="grid gap-2">
         {rankdles.map((rankdle, index) => (
