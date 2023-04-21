@@ -42,13 +42,16 @@ export default function Home() {
     "hidden" | "visible" | "seen"
   >("postStatus", "hidden", true);
   const [gameEnd, setGameEnd] = usePersistentState("end", false, true);
-
   const [stars, setStars] = usePersistentState("stars", 0, true);
   const [streak, setStreak] = usePersistentState("streak", 0, false);
   const player = createRef<HTMLIFrameElement>();
   const [loading, setLoading] = useState(false);
-  const [playedToday, setPlayedToday] = useState(false);
-  const [showWelcome, setShowWelcome] = useState(streak === 0);
+  const [playedToday, setPlayedToday] = usePersistentState(
+    "playedToday",
+    false,
+    true
+  );
+  const [showWelcome, setShowWelcome] = useState(streak === 0 && !playedToday);
 
   useUTCMidnightCallback(() => {
     location.reload();
