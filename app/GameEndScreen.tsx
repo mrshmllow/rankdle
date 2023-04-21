@@ -20,9 +20,12 @@ export default function GameEndScreen({
       <div className="grid grid-flow-col">
         {[...Array(6)].map((_, i) =>
           stars >= i + 1 ? (
-            <StarIconSolid className="w-7 h-7 text-ctp-yellow mx-auto" />
+            <StarIconSolid
+              key={i}
+              className="w-7 h-7 text-ctp-yellow mx-auto"
+            />
           ) : (
-            <StarIconOutline className="w-7 h-7 mx-auto" />
+            <StarIconOutline key={i} className="w-7 h-7 mx-auto" />
           )
         )}
       </div>
