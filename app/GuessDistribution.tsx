@@ -49,7 +49,7 @@ export default function GuessDistribution({ clip_id }: { clip_id: number }) {
   }
 
   return (
-    <div className="flex h-40 gap-1">
+    <div className="flex h-60 gap-1">
       {(Object.keys(Rank) as (keyof typeof Rank)[])
         .filter((rank) => isNaN(Number(rank)))
         .map((rank) => (
@@ -60,22 +60,9 @@ export default function GuessDistribution({ clip_id }: { clip_id: number }) {
             <div
               className={cx(["w-full rounded-sm", rankColours[rank]])}
               style={{
-                height: `calc(${
-                  distribution[rank] ? distribution[rank] : 5
-                }% - 30px)`,
+                height: `${distribution[rank]}%`,
               }}
-            >
-              {distribution[rank] && (
-                <p
-                  className={cx([
-                    "text-center",
-                    rank === "iron" ? "text-ctp-text" : "text-ctp-base",
-                  ])}
-                >
-                  {Math.round(distribution[rank])}%
-                </p>
-              )}
-            </div>
+            ></div>
 
             <Image
               src={getImageData(Rank[rank])}
@@ -84,6 +71,10 @@ export default function GuessDistribution({ clip_id }: { clip_id: number }) {
               width={30}
               height={30}
             />
+
+            <p className="text-center">
+              {distribution[rank] ? Math.round(distribution[rank]) : 0}%
+            </p>
           </div>
         ))}
     </div>

@@ -76,7 +76,7 @@ export default function PostGuessDialog({
 
           <Suspense
             fallback={
-              <div className="h-40 w-full bg-ctp-crust animate-pulse" />
+              <div className="h-60 w-full bg-ctp-crust animate-pulse" />
             }
           >
             <GuessDistribution clip_id={clip_id} />
