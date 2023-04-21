@@ -47,7 +47,6 @@ export default function Home() {
   const [streak, setStreak] = usePersistentState("streak", 0, false);
   const player = createRef<HTMLIFrameElement>();
   const [loading, setLoading] = useState(false);
-
   const [playedToday, setPlayedToday] = useState(false);
   const [showWelcome, setShowWelcome] = useState(streak === 0);
 
@@ -136,14 +135,20 @@ export default function Home() {
             {[...Array(6)].map((_, i) =>
               stars >= i + 1 ? (
                 i !== 3 - 1 ? (
-                  <StarIconSolid className="w-8 h-8 text-ctp-yellow mx-auto" />
+                  <StarIconSolid
+                    key={i}
+                    className="w-7 h-7 text-ctp-yellow mx-auto"
+                  />
                 ) : (
-                  <FireIconSolid className="w-8 h-8 text-ctp-red mx-auto animate-streak" />
+                  <FireIconSolid
+                    key={i}
+                    className="w-7 h-7 text-ctp-red mx-auto animate-streak"
+                  />
                 )
               ) : i !== 3 - 1 ? (
-                <StarIconOutline className="w-8 h-8 mx-auto" />
+                <StarIconOutline key={i} className="w-7 h-7 mx-auto" />
               ) : (
-                <FireIconOutline className="w-8 h-8 mx-auto" />
+                <FireIconOutline key={i} className="w-7 h-7 mx-auto" />
               )
             )}
           </div>
