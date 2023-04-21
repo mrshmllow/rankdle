@@ -20,6 +20,8 @@ import {
   StarIcon as StarIconSolid,
   FireIcon as FireIconSolid,
 } from "@heroicons/react/24/solid";
+import GameEndScreen from "./GameEndScreen";
+import WelcomeDialog from "./WelcomeDialog";
 
 const getRankdles = cache(async (supabase: TypedSupabaseClient) => {
   const rankdles = await supabase.rpc("get_daily_rankdles");
@@ -48,6 +50,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
 
   const [playedToday, setPlayedToday] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(streak === 0);
 
   useUTCMidnightCallback(() => {
     location.reload();
@@ -118,6 +121,11 @@ export default function Home() {
               tracker_id={rankdles[current].tracker_match}
             />
           )}
+
+          <WelcomeDialog
+            isOpen={showWelcome}
+            onClose={() => setShowWelcome(false)}
+          />
 
           <h1 className="text-xl font-semibold">Clip {current + 1} of 3</h1>
 
