@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 .counter-step {
-	counter-reset: step;
+  counter-reset: step;
 }
