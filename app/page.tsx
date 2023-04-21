@@ -109,7 +109,7 @@ export default function Home() {
   return (
     <main className="grid gap-2 max-w-2xl mx-auto px-2 pb-4">
       {gameEnd && postStatus === "seen" ? (
-        <GameEndScreen stars={stars} streak={streak} />
+        <GameEndScreen stars={stars} streak={streak} rankdles={rankdles} />
       ) : (
         <>
           {selectedRank !== null && (
