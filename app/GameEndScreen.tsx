@@ -2,7 +2,7 @@ import { StarIcon as StarIconOutline } from "@heroicons/react/24/outline";
 import { StarIcon as StarIconSolid, FireIcon } from "@heroicons/react/24/solid";
 import pluralize from "pluralize";
 
-export default function GameEndDialog({
+export default function GameEndScreen({
   stars,
   streak,
 }: {
@@ -20,9 +20,9 @@ export default function GameEndDialog({
       <div className="grid grid-flow-col">
         {[...Array(6)].map((_, i) =>
           stars >= i + 1 ? (
-            <StarIconSolid className="w-8 h-8 text-ctp-yellow mx-auto" />
+            <StarIconSolid className="w-7 h-7 text-ctp-yellow mx-auto" />
           ) : (
-            <StarIconOutline className="w-8 h-8 mx-auto" />
+            <StarIconOutline className="w-7 h-7 mx-auto" />
           )
         )}
       </div>

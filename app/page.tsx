@@ -3,7 +3,6 @@
 import { cache, createRef, use, useEffect, useState } from "react";
 import PostGuessDialog from "./PostGuessDialog";
 import { Rank } from "@/lib/types";
-import GameEndDialog from "./GameEndDialog";
 import { calculateStars } from "@/lib/stars";
 import { useSupabase } from "@/components/supabase-provider";
 import { TypedSupabaseClient } from "./layout";
@@ -108,7 +107,7 @@ export default function Home() {
   return (
     <main className="grid gap-2 max-w-2xl mx-auto px-2 pb-4">
       {gameEnd && postStatus === "seen" ? (
-        <GameEndDialog stars={stars} streak={streak} />
+        <GameEndScreen stars={stars} streak={streak} />
       ) : (
         <>
           {selectedRank !== null && (
