@@ -1,0 +1,6 @@
+.idea
+.turbo
+.next
+.vercel
+dist
+node_modules
