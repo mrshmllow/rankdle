@@ -14,12 +14,18 @@ export default function Meta() {
       </p>
 
       <div className="grid grid-flow-col gap-2">
-        <a className="rounded-md bg-ctp-red text-ctp-base py-2 px-4 inline-flex items-center gap-2 justify-center">
+        <a
+          className="rounded-md bg-ctp-red text-ctp-base py-2 px-4 inline-flex items-center gap-2 justify-center"
+          href="https://github.com/sponsors/mrshmllow"
+        >
           Donate
           <HeartIcon className="h-5 w-5" />
         </a>
 
-        <a className="rounded-md bg-ctp-surface0 py-2 px-4 inline-flex items-center gap-2 justify-center">
+        <a
+          className="rounded-md bg-ctp-surface0 py-2 px-4 inline-flex items-center gap-2 justify-center"
+          href="https://github.com/mrshmllow/rankdle"
+        >
           View Source
           <CodeBracketIcon className="h-5 w-5" />
         </a>
