@@ -15,7 +15,7 @@ export default function Meta() {
 
       <div className="grid grid-flow-col gap-2">
         <a
-          className="rounded-md bg-ctp-red text-ctp-base py-2 px-4 inline-flex items-center gap-2 justify-center"
+          className="rounded-md bg-ctp-red text-ctp-base py-2 px-4 inline-flex items-center gap-2 justify-center font-bold"
           href="https://github.com/sponsors/mrshmllow"
         >
           Donate
