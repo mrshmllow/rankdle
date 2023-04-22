@@ -36,17 +36,22 @@ export default async function RootLayout({
           <SupabaseListener serverAccessToken={session?.access_token} />
 
           <nav className="flex py-2 px-2 items-center justify-between">
-            <Link href="/" className="font-bold text-center text-2xl">
-              Rankdle
+            <Link href="/" className="text-center text-2xl">
+              <strong>Rankdle</strong>{" "}
+              <span className="text-ctp-subtext0">Beta</span>
             </Link>
 
-            <Link
-              href="/submit"
-              className="rounded-md bg-ctp-surface0 py-2 px-4 place-self-end inline-flex items-center gap-2"
-            >
-              Upload Clip
-              <VideoCameraIcon className="h-5 w-5" />
-            </Link>
+            <div className="space-x-4">
+              <Link href="/meta">About</Link>
+
+              <Link
+                href="/submit"
+                className="rounded-md bg-ctp-surface0 py-2 px-4 place-self-end inline-flex items-center gap-2"
+              >
+                Upload Clip
+                <VideoCameraIcon className="h-5 w-5" />
+              </Link>
+            </div>
           </nav>
 
           {children}
