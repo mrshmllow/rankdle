@@ -51,16 +51,22 @@ export default function Home() {
     true
   );
   const [showWelcome, setShowWelcome] = useState(streak === 0 && !playedToday);
+  const [streakIncreased, setStreakIncreased] = usePersistentState(
+    "streakIncreased",
+    false,
+    true
+  );
 
   useUTCMidnightCallback(() => {
     location.reload();
   });
 
   useEffect(() => {
-    if (stars >= 3 && playedToday) {
+    if (stars >= 3 && !streakIncreased) {
       setStreak((streak) => streak + 1);
+      setStreakIncreased(true);
     }
-  }, [stars, playedToday]);
+  }, [stars, streakIncreased]);
 
   useEffect(() => {
     if (stars <= 3 && gameEnd && playedToday) {
