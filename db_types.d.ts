@@ -9,6 +9,23 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      daily_rankdles_log: {
+        Row: {
+          id: number;
+          rankdle_id: number;
+          shown_date: string;
+        };
+        Insert: {
+          id?: number;
+          rankdle_id: number;
+          shown_date: string;
+        };
+        Update: {
+          id?: number;
+          rankdle_id?: number;
+          shown_date?: string;
+        };
+      };
       guesses: {
         Row: {
           clip_id: number;
@@ -60,27 +77,27 @@ export interface Database {
       };
       rankdles: {
         Row: {
-          approved: boolean;
           created_at: string | null;
           id: number;
           rank: Database["public"]["Enums"]["valorant_rank"];
           tracker_match: string;
+          val_id: string | null;
           youtube_id: string;
         };
         Insert: {
-          approved?: boolean;
           created_at?: string | null;
           id?: number;
           rank: Database["public"]["Enums"]["valorant_rank"];
           tracker_match: string;
+          val_id?: string | null;
           youtube_id: string;
         };
         Update: {
-          approved?: boolean;
           created_at?: string | null;
           id?: number;
           rank?: Database["public"]["Enums"]["valorant_rank"];
           tracker_match?: string;
+          val_id?: string | null;
           youtube_id?: string;
         };
       };
@@ -97,10 +114,11 @@ export interface Database {
         Args: Record<PropertyKey, never>;
         Returns: {
           id: number;
+          created_at: string;
+          tracker_match: string;
           youtube_id: string;
           rank: Database["public"]["Enums"]["valorant_rank"];
-          tracker_match: string;
-          date: string;
+          val_id: string;
         }[];
       };
       get_rank_distribution: {
