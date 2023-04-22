@@ -57,16 +57,16 @@ export default function Home() {
   });
 
   useEffect(() => {
-    if (stars >= 3) {
+    if (stars >= 3 && playedToday) {
       setStreak((streak) => streak + 1);
     }
-  }, [stars]);
+  }, [stars, playedToday]);
 
   useEffect(() => {
     if (stars <= 3 && gameEnd && playedToday) {
       setStreak(0);
     }
-  }, [stars, gameEnd]);
+  }, [stars, gameEnd, playedToday]);
 
   if (rankdles === null) {
     return <p>Something went wrong...</p>;
