@@ -14,6 +14,13 @@ export type TypedSupabaseClient = SupabaseClient<Database>;
 export const metadata = {
   title: "Rankdle",
   description: "Guess the valorant rank!",
+  openGraph: {
+    siteName: "Rankdle",
+    url: "https://rankdle.vercel.app/",
+    description: "Guess the valorant rank!",
+    locale: "en-US",
+    type: "website",
+  },
 };
 
 export default async function RootLayout({
