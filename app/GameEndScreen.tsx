@@ -76,7 +76,7 @@ export default function GameEndScreen({
               className="border-0 mx-auto w-full aspect-video rounded-md bg-ctp-crust"
               src={`https://www.youtube-nocookie.com/embed/${rankdle.youtube_id}?loop=1&modestbranding=1`}
               title={`A previous rankdle today, number ${index + 1}`}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen;"
             />
 
             <a
