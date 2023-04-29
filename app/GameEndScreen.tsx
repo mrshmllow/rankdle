@@ -2,6 +2,7 @@ import { StarIcon as StarIconOutline } from "@heroicons/react/24/outline";
 import { StarIcon as StarIconSolid, FireIcon } from "@heroicons/react/24/solid";
 import pluralize from "pluralize";
 import { Fragment } from "react";
+import CountDown from "./CountDown";
 
 export default function GameEndScreen({
   stars,
@@ -53,6 +54,8 @@ export default function GameEndScreen({
       </p>
 
       <p>Play tomorrow to increase your streak!</p>
+
+      <CountDown />
 
       <hr className="h-px my-3 bg-ctp-surface0 border-0" />
 
