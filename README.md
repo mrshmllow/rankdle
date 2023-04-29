@@ -1,36 +1,26 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# [Rankdle](https://rankdle.vercel.app)
 
-## Getting Started
+Guess the Valorant Rank!
 
-First, run the development server:
+A clone of a clone of a clone, this fun game presents you with 3 gameplay clips every day and your challange is to guess their ingame rank!
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+## Submitting Your Clip
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+To submit your clip, head over to the [Upload Page](https://rankdle.vercel.app/upload). There, you can fill out the short submission form.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Clips are manually reviewed and randomly selected every day.
 
-[http://localhost:3000/api/hello](http://localhost:3000/api/hello) is an endpoint that uses [Route Handlers](https://beta.nextjs.org/docs/routing/route-handlers). This endpoint can be edited in `app/api/hello/route.ts`.
+Clips may be re-uploaded to our youtube channel to maintain the integrity of this site.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+**Clips are attached to your discord account, troll submissions will get you blocked from the service. Thank you!**
 
-## Learn More
+### Requirements
 
-To learn more about Next.js, take a look at the following resources:
+Your Clip Must:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Be Yours
+- Be in ranked
+- Be on tracker.gg
+- Be within the past 30 days
+- Not contain overlays showing your rank
+- Not contain episode rank buddies
