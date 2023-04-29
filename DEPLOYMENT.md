@@ -44,6 +44,8 @@ Follow the steps to install supabase-custom-claims found here https://github.com
 
 Run all the SQL found in sql/ on the database using the sql editor on supabase.
 
+**Imporant**: You must substitute "ADMIN_USER_ID" for the user who is responsible for approving clips, and accessing /approve. This user must sign in with discord using the web app atleast once, and should not delete their account.
+
 ## The Web App
 
 Deployment stratergies for NextJS can be found here: https://nextjs.org/docs/deployment.
