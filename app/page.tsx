@@ -163,11 +163,9 @@ export default function Home() {
 
           <iframe
             className="border-0 mx-auto w-full h-full aspect-video rounded-md bg-ctp-crust shadow-ctp-crust shadow-md"
-            src={`https://www.youtube-nocookie.com/embed/${rankdles[current].youtube_id}?fs
-=0&loop=1&modestbranding=1`}
+            src={`https://www.youtube-nocookie.com/embed/${rankdles[current].youtube_id}?loop=1&modestbranding=1`}
             title={`Rankdle DAY Step ${current + 1}`}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen={false}
           />
 
           <RankButtons
