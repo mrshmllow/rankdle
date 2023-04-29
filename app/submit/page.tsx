@@ -56,9 +56,12 @@ export default function Submit() {
           youtube: "",
         }}
         onSubmit={async ({ val_id, tracker, youtube }, { setErrors }) => {
+          const youtube_url = new URL(youtube);
+          const youtube_id = youtube_url.searchParams.get("v")!;
+
           const row = await supabase.from("proposed").insert({
             tracker_id: tracker.split("/").at(-1)!,
-            youtube_id: youtube.split("/").at(-1)!,
+            youtube_id: youtube_id,
             val_id,
             user_id: session!.user.id,
           });
