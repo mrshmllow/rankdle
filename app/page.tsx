@@ -125,6 +125,7 @@ export default function Home() {
               answer={Rank[rankdles[current].rank]}
               clip_id={rankdles[current].id}
               tracker_id={rankdles[current].tracker_match}
+              val_id={rankdles[current].val_id}
             />
           )}
 

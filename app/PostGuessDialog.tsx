@@ -14,6 +14,7 @@ export default function PostGuessDialog({
   isOpen,
   onClose,
   answer,
+  val_id,
 }: {
   guess: Rank;
   isOpen: boolean;
@@ -21,6 +22,7 @@ export default function PostGuessDialog({
   onClose: () => void;
   answer: Rank;
   tracker_id: string;
+  val_id?: string;
 }) {
   const gainedStars = useMemo(
     () => calculateStars(guess, answer),
@@ -52,7 +54,7 @@ export default function PostGuessDialog({
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <Dialog.Panel className="w-full max-w-2xl rounded-md bg-ctp-mantle p-2 space-y-2">
+            <Dialog.Panel className="w-full max-w-2xl rounded-md bg-ctp-mantle p-2 grid gap-2">
               <Dialog.Title className="text-2xl font-bold">Result</Dialog.Title>
 
               <div className="grid grid-flow-col gap-2">
@@ -121,6 +123,12 @@ export default function PostGuessDialog({
               >
                 Next
               </button>
+
+              {val_id && (
+                <p className="inline-flex text-ctp-subtext0 justify-center gap-2">
+                  Clip by {val_id}
+                </p>
+              )}
             </Dialog.Panel>
           </Transition.Child>
         </div>
