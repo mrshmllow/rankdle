@@ -74,8 +74,30 @@ export default function Home() {
     }
   }, [stars, gameEnd, playedToday]);
 
+  useEffect(() => {
+    if (rankdles?.length === 0 && !streakIncreased) {
+      setStreak((streak) => streak + 1);
+      setStreakIncreased(true);
+    }
+  }, [rankdles, streakIncreased]);
+
   if (rankdles === null) {
     return <p>Something went wrong...</p>;
+  }
+
+  if (rankdles.length === 0) {
+    return (
+      <>
+        <p>There are no clips today :( dw we increased your streak for free</p>
+
+        {streak > 0 && (
+          <p className="inline-flex text-ctp-subtext0 justify-center gap-2">
+            <FireIconOutline className="w-5 h-5" />
+            {streak} day streak
+          </p>
+        )}
+      </>
+    );
   }
 
   const handleNextClick = async () => {
