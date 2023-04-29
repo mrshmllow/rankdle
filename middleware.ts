@@ -10,9 +10,16 @@ export async function middleware(req: NextRequest) {
     data: { session },
   } = await supabase.auth.getSession();
 
+  const approver = session?.user.app_metadata["approver"] as
+    | boolean
+    | undefined;
+
   const paths = ["/submit"];
 
-  if (!session && paths.some((path) => req.nextUrl.pathname.startsWith(path))) {
+  if (
+    (!session && paths.some((path) => req.nextUrl.pathname.startsWith(path))) ||
+    (req.nextUrl.pathname.startsWith("/approve") && !approver)
+  ) {
     // Auth condition not met, redirect
     const redirectUrl = req.nextUrl.clone();
     redirectUrl.pathname = "/account/login";

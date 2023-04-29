@@ -106,9 +106,29 @@ export interface Database {
       [_ in never]: never;
     };
     Functions: {
+      delete_claim: {
+        Args: {
+          uid: string;
+          claim: string;
+        };
+        Returns: string;
+      };
       delete_user: {
         Args: Record<PropertyKey, never>;
         Returns: undefined;
+      };
+      get_claim: {
+        Args: {
+          uid: string;
+          claim: string;
+        };
+        Returns: Json;
+      };
+      get_claims: {
+        Args: {
+          uid: string;
+        };
+        Returns: Json;
       };
       get_daily_rankdles: {
         Args: Record<PropertyKey, never>;
@@ -119,7 +139,18 @@ export interface Database {
           youtube_id: string;
           rank: Database["public"]["Enums"]["valorant_rank"];
           val_id: string;
+          log_id: number;
         }[];
+      };
+      get_my_claim: {
+        Args: {
+          claim: string;
+        };
+        Returns: Json;
+      };
+      get_my_claims: {
+        Args: Record<PropertyKey, never>;
+        Returns: Json;
       };
       get_rank_distribution: {
         Args: {
@@ -129,6 +160,18 @@ export interface Database {
           rank_rankdle: Database["public"]["Enums"]["valorant_rank"];
           percentage: number;
         }[];
+      };
+      is_claims_admin: {
+        Args: Record<PropertyKey, never>;
+        Returns: boolean;
+      };
+      set_claim: {
+        Args: {
+          uid: string;
+          claim: string;
+          value: Json;
+        };
+        Returns: string;
       };
     };
     Enums: {
