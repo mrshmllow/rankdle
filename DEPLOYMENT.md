@@ -50,5 +50,5 @@ Run all the SQL found in sql/ on the database using the sql editor on supabase.
 
 Deployment stratergies for NextJS can be found here: https://nextjs.org/docs/deployment.
 
-The web app expects to enviroment variables NEXT_PUBLIC_SUPABASE_URL & NEXT_PUBLIC_SUPABASE_ANON_KEY, which you will remember from [Database preperation](#database-preperation)
+The web app expects to enviroment variables NEXT_PUBLIC_SUPABASE_URL & NEXT_PUBLIC_SUPABASE_ANON_KEY, which you will remember from [Database preperation](#preperation)
 
