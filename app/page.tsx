@@ -1,14 +1,9 @@
 "use client";
 
-import { cache, use, useEffect, useState } from "react";
+import { useState } from "react";
 import PostGuessDialog from "./PostGuessDialog";
-import { Rank } from "@/lib/types";
-import { calculateStars } from "@/lib/stars";
-import { useSupabase } from "@/components/supabase-provider";
-import { TypedSupabaseClient } from "./layout";
 import RankButtons from "./RankButton";
-import NextButton from "./NextButton";
-import { usePersistentState } from "@/lib/usePersistentState";
+import GuessButton from "./NextButton";
 import { useUTCMidnightCallback } from "@/lib/time";
 import pluralize from "pluralize";
 import {
@@ -21,74 +16,32 @@ import {
 } from "@heroicons/react/24/solid";
 import GameEndScreen from "./GameEndScreen";
 import WelcomeDialog from "./WelcomeDialog";
-
-const getRankdles = cache(async (supabase: TypedSupabaseClient) => {
-  const rankdles = await supabase.rpc("get_daily_rankdles");
-
-  return rankdles.data;
-});
+import { useRankdles } from "./store";
 
 export default function Home() {
-  const { supabase, session } = useSupabase();
-  const rankdles = use(getRankdles(supabase));
+  const {
+    rankdles,
+    stars,
+    playedToday,
+    currentRankdle,
+    incrementCurrentRankdle,
+    selectedRank,
+    setSelectedRank,
+    streak,
+    gameState,
+    incrementGameState,
+  } = useRankdles();
 
-  const [current, setCurrent] = usePersistentState("current", 0, true);
-  const [selectedRank, setSelectedRank] = usePersistentState<Rank | null>(
-    "selected",
-    null,
-    true
-  );
-  const [postStatus, setPostStatus] = usePersistentState<
-    "hidden" | "visible" | "seen"
-  >("postStatus", "hidden", true);
-  const [gameEnd, setGameEnd] = usePersistentState("end", false, true);
-  const [stars, setStars] = usePersistentState("stars", 0, true);
-  const [streak, setStreak] = usePersistentState("streak", 0, false);
-  const [loading, setLoading] = useState(false);
-  const [playedToday, setPlayedToday] = usePersistentState(
-    "playedToday",
-    false,
-    true
-  );
   const [showWelcome, setShowWelcome] = useState(streak === 0 && !playedToday);
-  const [streakIncreased, setStreakIncreased] = usePersistentState(
-    "streakIncreased",
-    false,
-    true
-  );
 
   useUTCMidnightCallback(() => {
     location.reload();
   });
 
-  useEffect(() => {
-    if (stars >= 3 && !streakIncreased) {
-      setStreak((streak) => streak + 1);
-      setStreakIncreased(true);
-    }
-  }, [stars, streakIncreased]);
-
-  useEffect(() => {
-    if (stars <= 3 && gameEnd && playedToday) {
-      setStreak(0);
-    }
-  }, [stars, gameEnd, playedToday]);
-
-  useEffect(() => {
-    if (rankdles?.length === 0 && !streakIncreased) {
-      setStreak((streak) => streak + 1);
-      setStreakIncreased(true);
-    }
-  }, [rankdles, streakIncreased]);
-
-  if (rankdles === null) {
-    return <p>Something went wrong...</p>;
-  }
-
   if (rankdles.length === 0) {
     return (
       <>
-        <p>There are no clips today :( dw we increased your streak for free</p>
+        <p>There are no clips today :( your streak is maintained</p>
 
         {streak > 0 && (
           <p className="inline-flex text-ctp-subtext0 justify-center gap-2">
@@ -100,54 +53,23 @@ export default function Home() {
     );
   }
 
-  const handleNextClick = async () => {
-    setPlayedToday(true);
-    setLoading(true);
-
-    await supabase.from("guesses").insert({
-      clip_id: rankdles[current].id,
-      // @ts-ignore
-      rank: Rank[selectedRank],
-      user_id: session?.user.id,
-    });
-
-    setLoading(false);
-
-    setStars(
-      (stars) =>
-        stars + calculateStars(selectedRank!, Rank[rankdles[current].rank])
-    );
-
-    setPostStatus("visible");
-  };
-
   const handlePostClose = () => {
-    setPlayedToday(true);
     setSelectedRank(null);
-    setPostStatus("seen");
+    incrementGameState();
 
-    if (current === 2) {
-      setGameEnd(true);
-    } else {
-      setCurrent((current) => current + 1);
-    }
+    incrementCurrentRankdle();
   };
 
   return (
     <main className="grid gap-2 max-w-2xl mx-auto px-2 pb-4">
-      {gameEnd && postStatus === "seen" ? (
-        <GameEndScreen stars={stars} streak={streak} rankdles={rankdles} />
+      {gameState === "game-over" ? (
+        <GameEndScreen stars={stars} streak={streak} />
       ) : (
         <>
           {selectedRank !== null && (
             <PostGuessDialog
-              isOpen={postStatus === "visible"}
+              isOpen={gameState === "post-guess"}
               onClose={handlePostClose}
-              guess={selectedRank}
-              answer={Rank[rankdles[current].rank]}
-              clip_id={rankdles[current].id}
-              tracker_id={rankdles[current].tracker_match}
-              val_id={rankdles[current].val_id}
             />
           )}
 
@@ -156,7 +78,9 @@ export default function Home() {
             onClose={() => setShowWelcome(false)}
           />
 
-          <h1 className="text-xl font-semibold">Clip {current + 1} of 3</h1>
+          <h1 className="text-xl font-semibold">
+            Clip {currentRankdle + 1} of {rankdles.length}
+          </h1>
 
           <p className="sr-only">
             {stars} {pluralize("star", stars)} / 6
@@ -186,22 +110,14 @@ export default function Home() {
 
           <iframe
             className="border-0 mx-auto w-full h-full aspect-video rounded-md bg-ctp-crust shadow-ctp-crust shadow-md"
-            src={`https://www.youtube-nocookie.com/embed/${rankdles[current].youtube_id}?loop=1&modestbranding=1`}
-            title={`Rankdle DAY Step ${current + 1}`}
+            src={`https://www.youtube-nocookie.com/embed/${rankdles[currentRankdle].youtubeId}?loop=1&modestbranding=1`}
+            title={`Rankdle DAY Step ${currentRankdle + 1}`}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen;"
           />
 
-          <RankButtons
-            selectedRank={selectedRank}
-            onRankSelect={(rank) => setSelectedRank(rank)}
-          />
+          <RankButtons />
 
-          <NextButton
-            selectedRank={selectedRank}
-            showPost={postStatus === "visible"}
-            onClick={handleNextClick}
-            loading={loading}
-          />
+          <GuessButton />
 
           <p className="text-center text-ctp-subtext0">
             All clips are less than 30 days old.

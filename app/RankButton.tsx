@@ -3,29 +3,38 @@ import Image from "next/image";
 import { cx } from "cva";
 import { Rank } from "@/lib/types";
 import { getImageData } from "@/lib/icons";
+import { useRankdles } from "./store";
 
-export default function RankButtons({
-  selectedRank,
-  onRankSelect,
-}: {
-  selectedRank: Rank | null;
-  onRankSelect: (rank: Rank) => void;
-}) {
+export default function RankButtons() {
+  const { selectedRank, setSelectedRank } = useRankdles();
+
   return (
     <div className="flex justify-center gap-1 flex-wrap">
-      {(Object.keys(Rank) as (keyof typeof Rank)[])
+      {(
+        [
+          "iron",
+          "bronze",
+          "silver",
+          "gold",
+          "platinum",
+          "diamond",
+          "ascendant",
+          "immortal",
+          "radiant",
+        ] as Rank[]
+      )
         .filter((rank) => isNaN(Number(rank)))
         .map((rank) => (
           <button
             key={rank}
             className={cx([
-              selectedRank === Rank[rank] ? "bg-ctp-surface0 rounded-md" : null,
+              selectedRank === rank ? "bg-ctp-surface0 rounded-md" : null,
               "p-1",
             ])}
-            onClick={() => onRankSelect(Rank[rank])}
+            onClick={() => setSelectedRank(rank)}
           >
             <Image
-              src={getImageData(Rank[rank])}
+              src={getImageData(rank)}
               alt={`Valorant ${rank} icon`}
               placeholder="blur"
               width={60}

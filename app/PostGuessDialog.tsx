@@ -1,32 +1,28 @@
 import Image from "next/image";
 import { Dialog, Transition } from "@headlessui/react";
 import { getImageData } from "@/lib/icons";
-import { Rank } from "@/lib/types";
 import { calculateStars } from "@/lib/stars";
 import pluralize from "pluralize";
 import { Fragment, Suspense, useMemo } from "react";
 import GuessDistribution from "./GuessDistribution";
+import { useRankdles } from "./store";
 
 export default function PostGuessDialog({
-  guess,
-  clip_id,
-  tracker_id,
   isOpen,
   onClose,
-  answer,
-  val_id,
 }: {
-  guess: Rank;
   isOpen: boolean;
-  clip_id: number;
   onClose: () => void;
-  answer: Rank;
-  tracker_id: string;
-  val_id?: string;
 }) {
+  const { rankdles, currentRankdle, selectedRank } = useRankdles();
+  const rankdle = useMemo(
+    () => rankdles[currentRankdle],
+    [currentRankdle, rankdles]
+  );
+
   const gainedStars = useMemo(
-    () => calculateStars(guess, answer),
-    [guess, answer]
+    () => calculateStars(selectedRank!, rankdle.rank),
+    [selectedRank, rankdle]
   );
 
   return (
@@ -61,8 +57,8 @@ export default function PostGuessDialog({
                 <div>
                   <p className="text-center font-semibold">Your Guess</p>
                   <Image
-                    src={getImageData(guess)}
-                    alt={Rank[guess].toString()}
+                    src={getImageData(selectedRank!)}
+                    alt={selectedRank!.toString()}
                     placeholder="blur"
                     width={70}
                     height={70}
@@ -73,8 +69,8 @@ export default function PostGuessDialog({
                 <div>
                   <p className="text-center font-semibold">Answer</p>
                   <Image
-                    src={getImageData(answer)}
-                    alt={Rank[answer].toString()}
+                    src={getImageData(rankdle.rank)}
+                    alt={rankdle.rank.toString()}
                     placeholder="blur"
                     width={70}
                     height={70}
@@ -101,11 +97,11 @@ export default function PostGuessDialog({
                   <div className="h-60 w-full bg-ctp-crust animate-pulse" />
                 }
               >
-                <GuessDistribution clip_id={clip_id} />
+                <GuessDistribution />
               </Suspense>
 
               <a
-                href={`https://tracker.gg/valorant/match/${tracker_id}`}
+                href={`https://tracker.gg/valorant/match/${rankdle.trackerMatch}`}
                 target="_blank"
                 className="rounded-md py-2 px-4 w-full transition-colors bg-ctp-surface0 text-ctp-text block text-center"
               >
@@ -124,9 +120,9 @@ export default function PostGuessDialog({
                 Next
               </button>
 
-              {val_id && (
+              {rankdle.valorantId && (
                 <p className="inline-flex text-ctp-subtext0 justify-center gap-2">
-                  Clip by {val_id}
+                  Clip by {rankdle.valorantId}
                 </p>
               )}
             </Dialog.Panel>

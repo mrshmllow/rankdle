@@ -1,0 +1,34 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1685784859504,
+      "tag": "0000_abandoned_justice",
+      "breakpoints": false
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1685788554651,
+      "tag": "0001_sturdy_argent",
+      "breakpoints": false
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1685789714583,
+      "tag": "0002_careful_thunderbolt",
+      "breakpoints": false
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1685839065471,
+      "tag": "0003_woozy_gamora",
+      "breakpoints": false
+    }
+  ]
+}

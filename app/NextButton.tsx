@@ -1,26 +1,29 @@
-import { Rank } from "@/lib/types";
 import { cx } from "cva";
-import { useMemo } from "react";
+import { useMemo, useTransition } from "react";
+import { useRankdles } from "./store";
+import { addGuess } from "./actions";
 
-export default function NextButton({
-  selectedRank,
-  loading,
-  showPost,
-  onClick,
-}: {
-  selectedRank: Rank | null;
-  onClick: () => void;
-  loading: boolean;
-  showPost: boolean;
-}) {
+export default function GuessButton() {
+  const {
+    selectedRank,
+    rankdles,
+    currentRankdle,
+    increaseStars,
+    incrementGameState,
+    gameState,
+  } = useRankdles();
+
   const capRank = useMemo(
     () =>
       selectedRank === null
         ? null
-        : Rank[selectedRank].toString().charAt(0).toUpperCase() +
-          Rank[selectedRank]?.toString().slice(1),
+        : selectedRank.toString().charAt(0).toUpperCase() +
+          selectedRank?.toString().slice(1),
     [selectedRank]
   );
+
+  const [loading, startTransition] = useTransition();
+
   return (
     <button
       className={cx([
@@ -30,8 +33,18 @@ export default function NextButton({
           : "bg-ctp-red text-ctp-base",
         loading ? "animate-pulse" : null,
       ])}
-      disabled={selectedRank === null || showPost}
-      onClick={onClick}
+      disabled={selectedRank === null || gameState === "post-guess"}
+      onClick={() => {
+        startTransition(() => {
+          addGuess({
+            clipId: rankdles[currentRankdle].id,
+            rank: selectedRank!,
+          });
+        });
+
+        increaseStars();
+        incrementGameState();
+      }}
     >
       Guess {capRank}
     </button>

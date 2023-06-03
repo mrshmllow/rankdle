@@ -3,30 +3,16 @@ import { StarIcon as StarIconSolid, FireIcon } from "@heroicons/react/24/solid";
 import pluralize from "pluralize";
 import { Fragment } from "react";
 import CountDown from "./CountDown";
+import { useRankdles } from "./store";
 
 export default function GameEndScreen({
   stars,
   streak,
-  rankdles,
 }: {
   stars: number;
   streak: number;
-  rankdles: {
-    id: number;
-    youtube_id: string;
-    rank:
-      | "iron"
-      | "bronze"
-      | "silver"
-      | "gold"
-      | "platinum"
-      | "diamond"
-      | "ascendant"
-      | "immortal"
-      | "radiant";
-    tracker_match: string;
-  }[];
 }) {
+  const { rankdles } = useRankdles();
   return (
     <>
       <h1 className="text-2xl font-bold">Todays Stats</h1>
@@ -74,13 +60,13 @@ export default function GameEndScreen({
 
             <iframe
               className="border-0 mx-auto w-full aspect-video rounded-md bg-ctp-crust"
-              src={`https://www.youtube-nocookie.com/embed/${rankdle.youtube_id}?loop=1&modestbranding=1`}
+              src={`https://www.youtube-nocookie.com/embed/${rankdle.youtubeId}?loop=1&modestbranding=1`}
               title={`A previous rankdle today, number ${index + 1}`}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen;"
             />
 
             <a
-              href={`https://tracker.gg/valorant/match/${rankdle.tracker_match}`}
+              href={`https://tracker.gg/valorant/match/${rankdle.trackerMatch}`}
               target="_blank"
               className="rounded-md py-2 px-4 w-full transition-colors bg-ctp-surface0 text-ctp-text block text-center"
             >

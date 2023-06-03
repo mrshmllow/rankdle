@@ -1,31 +1,16 @@
 import { cache, use } from "react";
 import Image from "next/image";
-import { TypedSupabaseClient } from "./layout";
-import { useSupabase } from "@/components/supabase-provider";
-import { Rank } from "@/lib/types";
 import { getImageData } from "@/lib/icons";
 import { cx } from "cva";
+import { Rank } from "@/lib/types";
+import { useRankdles } from "./store";
 
-const getRankDistribution = cache(
-  async (supabase: TypedSupabaseClient, clip_id: number) => {
-    const distribution = await supabase.rpc("get_rank_distribution", {
-      p_clip_id: clip_id,
-    });
-
-    return distribution.data?.reduce(
-      (
-        acc: Record<string, number>,
-        {
-          rank_rankdle,
-          percentage,
-        }: { rank_rankdle: string; percentage: number }
-      ) => {
-        acc[rank_rankdle] = percentage;
-        return acc;
-      },
-      {}
-    );
-  }
+const getRankDistribution = cache(async (rankdle: number) =>
+  fetch(`/api/distribution/${rankdle}`, {
+    next: {
+      tags: [`distribution-${rankdle}`],
+    },
+  }).then((res) => res.json())
 );
 
 const rankColours = {
@@ -40,9 +25,9 @@ const rankColours = {
   radiant: "bg-ctp-yellow",
 };
 
-export default function GuessDistribution({ clip_id }: { clip_id: number }) {
-  const { supabase } = useSupabase();
-  const distribution = use(getRankDistribution(supabase, clip_id));
+export default function GuessDistribution() {
+  const { currentRankdle, rankdles } = useRankdles();
+  const distribution = use(getRankDistribution(rankdles[currentRankdle].id));
 
   if (distribution === undefined) {
     return <p>Something went wrong...</p>;
@@ -50,7 +35,19 @@ export default function GuessDistribution({ clip_id }: { clip_id: number }) {
 
   return (
     <div className="flex h-60 gap-1">
-      {(Object.keys(Rank) as (keyof typeof Rank)[])
+      {(
+        [
+          "iron",
+          "bronze",
+          "silver",
+          "gold",
+          "platinum",
+          "diamond",
+          "ascendant",
+          "immortal",
+          "radiant",
+        ] as Rank[]
+      )
         .filter((rank) => isNaN(Number(rank)))
         .map((rank) => (
           <div
@@ -65,7 +62,7 @@ export default function GuessDistribution({ clip_id }: { clip_id: number }) {
             ></div>
 
             <Image
-              src={getImageData(Rank[rank])}
+              src={getImageData(rank)}
               alt={`Valorant ${rank} icon`}
               className="mx-auto w-[30px] h-[30px]"
               width={30}

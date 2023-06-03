@@ -11,15 +11,15 @@ import { StaticImageData } from "next/image";
 import { Rank } from "./types";
 
 const iconRankMap = {
-  [Rank.iron]: iron,
-  [Rank.bronze]: bronze,
-  [Rank.silver]: silver,
-  [Rank.gold]: gold,
-  [Rank.platinum]: platinum,
-  [Rank.diamond]: diamond,
-  [Rank.ascendant]: ascendant,
-  [Rank.immortal]: immortal,
-  [Rank.radiant]: radiant,
+  iron,
+  bronze,
+  silver,
+  gold,
+  platinum,
+  diamond,
+  ascendant,
+  immortal,
+  radiant,
 };
 
 export function getImageData(rank: Rank): StaticImageData {

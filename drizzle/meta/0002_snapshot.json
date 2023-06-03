@@ -1,0 +1,155 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "id": "338bea24-e595-4c37-8efb-3cf99e4adb3f",
+  "prevId": "065a3c06-0a0d-4508-8568-d6e147ec1009",
+  "tables": {
+    "daily_rankdle_log": {
+      "name": "daily_rankdle_log",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "rankdle_id": {
+          "name": "rankdle_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "shown_date": {
+          "name": "shown_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "daily_rankdle_log_rankdle_id_rankdles_id_fk": {
+          "name": "daily_rankdle_log_rankdle_id_rankdles_id_fk",
+          "tableFrom": "daily_rankdle_log",
+          "tableTo": "rankdles",
+          "columnsFrom": ["rankdle_id"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {}
+    },
+    "guesses": {
+      "name": "guesses",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "rank": {
+          "name": "rank",
+          "type": "rank",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "clip_id": {
+          "name": "clip_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "guesses_clip_id_rankdles_id_fk": {
+          "name": "guesses_clip_id_rankdles_id_fk",
+          "tableFrom": "guesses",
+          "tableTo": "rankdles",
+          "columnsFrom": ["clip_id"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {}
+    },
+    "rankdles": {
+      "name": "rankdles",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "tracker_match": {
+          "name": "tracker_match",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "youtube_id": {
+          "name": "youtube_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "rank": {
+          "name": "rank",
+          "type": "rank",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "val_id": {
+          "name": "val_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {}
+    }
+  },
+  "enums": {
+    "rank": {
+      "name": "rank",
+      "values": {
+        "iron": "iron",
+        "silver": "silver",
+        "gold": "gold",
+        "platinum": "platinum",
+        "diamond": "diamond",
+        "immortal": "immortal",
+        "radiant": "radiant"
+      }
+    }
+  },
+  "schemas": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  }
+}
