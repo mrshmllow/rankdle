@@ -116,6 +116,7 @@ export const useRankdles = create<{
         selectedRank: state.selectedRank,
       }),
       version: 1,
+      skipHydration: true,
     }
   )
 );
