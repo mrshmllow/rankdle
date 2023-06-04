@@ -25,7 +25,8 @@ export const useRankdles = create<{
   _streakIncreased: boolean;
   _expires: number;
   _onNewDay: () => void;
-
+  lifetimeStars: number[];
+  lifetimeWins: number;
   gameState: "guessing" | "post-guess" | "game-over";
   incrementGameState: () => void;
 }>()(
@@ -34,6 +35,8 @@ export const useRankdles = create<{
       rankdles: [],
       setRankdles: (rankdles: Rankdle[]) => set({ rankdles }),
       currentRankdle: 0,
+      lifetimeStars: Array(7).fill(0),
+      lifetimeWins: 0,
       selectedRank: null,
       setSelectedRank: (rank: Rank | null) => set({ selectedRank: rank }),
       incrementCurrentRankdle: () =>
@@ -60,15 +63,24 @@ export const useRankdles = create<{
               get().selectedRank!,
               get().rankdles[get().currentRankdle].rank
             );
-          const streakResetCondition =
-            newStars <= 3 &&
-            get().gameState === "game-over" &&
-            get().playedToday;
-          const streakMaintainCondition =
-            (newStars >= 3 && !get()._streakIncreased) ||
-            (get().rankdles.length === 0 && !get()._streakIncreased);
-          const streakIncreaseCondition =
-            !streakMaintainCondition && !get()._streakIncreased;
+
+          let streakResetCondition = false;
+          let streakIncreaseCondition = false;
+          let lifetimeWins = get().lifetimeWins;
+          let lifetimeStars = [...get().lifetimeStars];
+
+          if (newStars < 3 && get().gameState === "game-over") {
+            streakResetCondition = true;
+          }
+
+          if (newStars >= 3 && !get()._streakIncreased) {
+            streakIncreaseCondition = true;
+
+            lifetimeStars[newStars]++;
+
+            lifetimeWins =
+              newStars >= 3 ? get().lifetimeWins + 1 : get().lifetimeWins;
+          }
 
           return {
             playedToday: true,
@@ -78,8 +90,9 @@ export const useRankdles = create<{
               : streakIncreaseCondition
               ? get().streak + 1
               : get().streak,
-            _streakIncreased:
-              streakMaintainCondition || streakIncreaseCondition,
+            _streakIncreased: streakIncreaseCondition || get()._streakIncreased,
+            lifetimeStars,
+            lifetimeWins,
           };
         }),
       streak: 0,
@@ -114,6 +127,9 @@ export const useRankdles = create<{
         _expires: state._expires,
         gameState: state.gameState,
         selectedRank: state.selectedRank,
+        _streakIncreased: state._streakIncreased,
+        lifetimeStars: state.lifetimeStars,
+        lifetimeWins: state.lifetimeWins,
       }),
       version: 1,
       skipHydration: true,
