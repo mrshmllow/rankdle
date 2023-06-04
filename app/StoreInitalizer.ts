@@ -15,7 +15,7 @@ export function StoreInitalizer({ rankdles }: { rankdles: Rankdle[] }) {
     if (isBrowser) {
       useRankdles.persist.rehydrate();
 
-      if (useRankdles.getState()._expires < Date.now()) {
+      if (useRankdles.getState()._internal.expires < Date.now()) {
         useRankdles.getState()._onNewDay();
       }
     }

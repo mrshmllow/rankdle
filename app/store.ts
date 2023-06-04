@@ -12,33 +12,52 @@ function getExpiration() {
 }
 
 export const useRankdles = create<{
+  _internal: {
+    streakIncreased: boolean;
+    expires: number;
+  };
+  _onNewDay: () => void;
+  lifetime: {
+    stars: number[];
+    wins: number;
+  };
   rankdles: Rankdle[];
   setRankdles: (rankdles: Rankdle[]) => void;
   currentRankdle: number;
   incrementCurrentRankdle: () => void;
   selectedRank: Rank | null;
   setSelectedRank: (rank: Rank | null) => void;
-  stars: number;
-  increaseStars: () => void;
-  playedToday: boolean;
-  streak: number;
-  _streakIncreased: boolean;
-  _expires: number;
-  _onNewDay: () => void;
-  lifetimeStars: number[];
-  lifetimeWins: number;
-  gameState: "guessing" | "post-guess" | "game-over";
   incrementGameState: () => void;
+  stars: number;
+  playedToday: boolean;
+  increaseStars: () => void;
+  streak: number;
+  gameState: "guessing" | "post-guess" | "game-over";
 }>()(
   persist(
     (set, get) => ({
+      _internal: {
+        streakIncreased: false,
+        expires: 0,
+      },
+      _onNewDay: () =>
+        set({
+          playedToday: false,
+          stars: 0,
+          currentRankdle: 0,
+          _internal: {
+            ...get()._internal,
+            streakIncreased: false,
+            expires: getExpiration(),
+          },
+        }),
+      lifetime: {
+        stars: Array(7).fill(0),
+        wins: 0,
+      },
       rankdles: [],
       setRankdles: (rankdles: Rankdle[]) => set({ rankdles }),
       currentRankdle: 0,
-      lifetimeStars: Array(7).fill(0),
-      lifetimeWins: 0,
-      selectedRank: null,
-      setSelectedRank: (rank: Rank | null) => set({ selectedRank: rank }),
       incrementCurrentRankdle: () =>
         set(() =>
           get().currentRankdle + 1 >= get().rankdles.length
@@ -51,10 +70,20 @@ export const useRankdles = create<{
                 currentRankdle: get().currentRankdle + 1,
               }
         ),
+      selectedRank: null,
+      setSelectedRank: (rank: Rank | null) => set({ selectedRank: rank }),
+      incrementGameState: () =>
+        set({
+          gameState:
+            get().gameState === "guessing"
+              ? "post-guess"
+              : get().gameState === "post-guess" &&
+                get().currentRankdle + 1 >= get().rankdles.length
+              ? "game-over"
+              : "guessing",
+        }),
       stars: 0,
       playedToday: false,
-      _streakIncreased: false,
-      _expires: 0,
       increaseStars: () =>
         set(() => {
           const newStars =
@@ -66,20 +95,20 @@ export const useRankdles = create<{
 
           let streakResetCondition = false;
           let streakIncreaseCondition = false;
-          let lifetimeWins = get().lifetimeWins;
-          let lifetimeStars = [...get().lifetimeStars];
+          let lifetimeWins = get().lifetime.wins;
+          let lifetimeStars = [...get().lifetime.stars];
 
           if (newStars < 3 && get().gameState === "game-over") {
             streakResetCondition = true;
           }
 
-          if (newStars >= 3 && !get()._streakIncreased) {
+          if (newStars >= 3 && !get()._internal.streakIncreased) {
             streakIncreaseCondition = true;
 
             lifetimeStars[newStars]++;
 
             lifetimeWins =
-              newStars >= 3 ? get().lifetimeWins + 1 : get().lifetimeWins;
+              newStars >= 3 ? get().lifetime.wins + 1 : get().lifetime.wins;
           }
 
           return {
@@ -90,31 +119,19 @@ export const useRankdles = create<{
               : streakIncreaseCondition
               ? get().streak + 1
               : get().streak,
-            _streakIncreased: streakIncreaseCondition || get()._streakIncreased,
-            lifetimeStars,
-            lifetimeWins,
+            _internal: {
+              ...get()._internal,
+              streakIncreased:
+                streakIncreaseCondition || get()._internal.streakIncreased,
+            },
+            lifetime: {
+              stars: lifetimeStars,
+              wins: lifetimeWins,
+            },
           };
         }),
       streak: 0,
-      _onNewDay: () =>
-        set({
-          playedToday: false,
-          stars: 0,
-          currentRankdle: 0,
-          _streakIncreased: false,
-          _expires: getExpiration(),
-        }),
       gameState: "guessing",
-      incrementGameState: () =>
-        set({
-          gameState:
-            get().gameState === "guessing"
-              ? "post-guess"
-              : get().gameState === "post-guess" &&
-                get().currentRankdle + 1 >= get().rankdles.length
-              ? "game-over"
-              : "guessing",
-        }),
     }),
     {
       name: "rankdles-storage",
@@ -124,12 +141,14 @@ export const useRankdles = create<{
         stars: state.stars,
         streak: state.streak,
         currentRankdle: state.currentRankdle,
-        _expires: state._expires,
         gameState: state.gameState,
         selectedRank: state.selectedRank,
-        _streakIncreased: state._streakIncreased,
-        lifetimeStars: state.lifetimeStars,
-        lifetimeWins: state.lifetimeWins,
+        lifetime: {
+          ...state.lifetime,
+        },
+        _internal: {
+          ...state._internal,
+        },
       }),
       version: 1,
       skipHydration: true,
