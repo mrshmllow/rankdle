@@ -4,6 +4,8 @@ import { proposed } from "@/db/schema";
 import { asc } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   if (!userIsApprover()) return;
 
