@@ -1,47 +1,38 @@
 "use client";
 
 import { cache, use, useState } from "react";
-import { TypedSupabaseClient } from "../layout";
-import { useSupabase } from "@/components/supabase-provider";
+import { Proposed } from "@/db/schema";
+import { acceptProposed, deleteProposed } from "./actions";
 
-const getProposed = cache(async (supabase: TypedSupabaseClient) => {
-  const rankdles = await supabase
-    .from("proposed")
-    .select("*", { count: "exact" })
-    .order("created_at");
-
-  return {
-    count: rankdles.count,
-    data: rankdles.data,
-  };
-});
+const getProposed = cache(async () =>
+  fetch("/api/approve/")
+    .then((data) => {
+      console.log(data);
+      return data.json();
+    })
+    .then((data) => data as Proposed[])
+);
 
 export default function Approve() {
-  const { supabase } = useSupabase();
-  const proposed = use(getProposed(supabase));
+  const proposed = use(getProposed());
   const [current, setCurrent] = useState(0);
 
-  if (proposed.data === null) return <p>Something went wrong, check browser</p>;
-
-  if (proposed.data.length === 0)
-    return <p>There are no more clips for today</p>;
-
-  if (current === proposed.data.length)
+  if (proposed.length === 0 || current === proposed.length)
     return <p>Reached end of proposed queue</p>;
 
   return (
     <main className="grid gap-2 max-w-2xl mx-auto px-2 pb-4">
       <p>
-        {current + 1}/{proposed.data.length}
+        {current + 1}/{proposed.length}
       </p>
 
       <p>
-        proposed by <strong>{proposed.data[current].user_id}</strong>
+        proposed by <strong>{proposed[current].userId}</strong>
       </p>
 
       <iframe
         className="border-0 mx-auto w-full aspect-video rounded-md bg-ctp-crust shadow-ctp-crust shadow-md"
-        src={`https://www.youtube-nocookie.com/embed/${proposed.data[current].youtube_id}?loop=1&modestbranding=1`}
+        src={`https://www.youtube-nocookie.com/embed/${proposed[current].youtubeId}?loop=1&modestbranding=1`}
         title={`Rankdle DAY Step ${current + 1}`}
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
       />
@@ -54,37 +45,22 @@ export default function Approve() {
         </tr>
 
         <tr>
-          <th>{proposed.data[current].val_id}</th>
+          <th>{proposed[current].valorantId}</th>
           <th>
             <a
-              href={`https://tracker.gg/valorant/match/${proposed.data[current].tracker_id}`}
+              href={`https://tracker.gg/valorant/match/${proposed[current].trackerMatch}`}
             >
               link
             </a>
           </th>
-          <th>{proposed.data[current].youtube_id}</th>
+          <th>{proposed[current].youtubeId}</th>
         </tr>
       </table>
 
       <div className="grid grid-flow-col gap-2">
         <button
           onClick={async () => {
-            const curr = proposed.data![current];
-
-            Promise.all([
-              supabase
-                .from("proposed")
-                .delete()
-                .eq("id", proposed.data![current].id),
-
-              supabase.from("rankdles").insert({
-                youtube_id: curr.youtube_id,
-                tracker_match: curr.tracker_id,
-                val_id: curr.val_id,
-                // @ts-ignore
-                rank: prompt("rank", "ascendant"),
-              }),
-            ]);
+            acceptProposed(proposed[current].id, "iron");
 
             setCurrent((current) => current + 1);
           }}
@@ -95,10 +71,8 @@ export default function Approve() {
         <button
           onClick={async () => {
             if (window.confirm("Delete?")) {
-              await supabase
-                .from("proposed")
-                .delete()
-                .eq("id", proposed.data![current].id);
+              await deleteProposed(proposed[current].id);
+
               setCurrent((current) => current + 1);
             }
           }}

@@ -40,6 +40,7 @@ specifiers:
   tiny-cookie: ^2.4.1
   typescript: 5.0.4
   zod: ^3.21.4
+  zod-form-data: ^2.0.1
   zod-formik-adapter: ^1.2.0
   zustand: ^4.3.8
 
@@ -73,6 +74,7 @@ dependencies:
   tiny-cookie: 2.4.1
   typescript: 5.0.4
   zod: 3.21.4
+  zod-form-data: 2.0.1_zod@3.21.4
   zod-formik-adapter: 1.2.0_formik@2.2.9+zod@3.21.4
   zustand: 4.3.8_react@18.2.0
 
@@ -5432,6 +5434,17 @@ packages:
         integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==,
       }
     engines: { node: ">=10" }
+    dev: false
+
+  /zod-form-data/2.0.1_zod@3.21.4:
+    resolution:
+      {
+        integrity: sha512-4jcsj3vFyFGINLLHEmehfOPKdcw+HqV65RwsV2IdyLHp9wpvGJRVXWg1yY8sq0ASEbQfTVBRtI7LcDGv3Qpj8g==,
+      }
+    peerDependencies:
+      zod: ^3.11.x
+    dependencies:
+      zod: 3.21.4
     dev: false
 
   /zod-formik-adapter/1.2.0_formik@2.2.9+zod@3.21.4:

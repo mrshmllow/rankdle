@@ -1,5 +1,5 @@
 import { cx } from "cva";
-import { useMemo, useTransition } from "react";
+import { useMemo, useState } from "react";
 import { useRankdles } from "./store";
 import { addGuess } from "./actions";
 
@@ -22,7 +22,7 @@ export default function GuessButton() {
     [selectedRank]
   );
 
-  const [loading, startTransition] = useTransition();
+  const [loading, setLoading] = useState(false);
 
   return (
     <button
@@ -34,14 +34,14 @@ export default function GuessButton() {
         loading ? "animate-pulse" : null,
       ])}
       disabled={selectedRank === null || gameState === "post-guess"}
-      onClick={() => {
-        startTransition(() => {
-          addGuess({
-            clipId: rankdles[currentRankdle].id,
-            rank: selectedRank!,
-          });
+      onClick={async () => {
+        setLoading(true);
+        await addGuess({
+          clipId: rankdles[currentRankdle].id,
+          rank: selectedRank!,
         });
 
+        setLoading(false);
         increaseStars();
         incrementGameState();
       }}
