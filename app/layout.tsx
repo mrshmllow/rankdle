@@ -47,21 +47,20 @@ export default async function RootLayout({
     });
 
     if (oldestRankdles.length === 0) {
-      // TODO: No rankdles today
-      return notFound();
+      todaysRankdles = [];
+    } else {
+      todaysRankdles = await Promise.all(
+        oldestRankdles.map((rankdle) =>
+          db
+            .update(rankdles)
+            .set({
+              shownDate: currentDate,
+            })
+            .where(eq(rankdles.id, rankdle.id))
+            .returning()
+        )
+      ).then((rankdles) => rankdles.map((rankdle) => rankdle[0]));
     }
-
-    todaysRankdles = await Promise.all(
-      oldestRankdles.map((rankdle) =>
-        db
-          .update(rankdles)
-          .set({
-            shownDate: currentDate,
-          })
-          .where(eq(rankdles.id, rankdle.id))
-          .returning()
-      )
-    ).then((rankdles) => rankdles.map((rankdle) => rankdle[0]));
   }
 
   return (
