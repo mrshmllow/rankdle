@@ -7,7 +7,7 @@ import { NextResponse } from "next/server";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  if (!userIsApprover()) return;
+  if (!(await userIsApprover())) return;
 
   const result = await db.query.proposed.findMany({
     orderBy: [asc(proposed.createdAt)],

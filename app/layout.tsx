@@ -1,19 +1,16 @@
 import "server-only";
 import { db } from "@/db/db";
 import { rankdles } from "@/db/schema";
-import { createServerClient } from "@/lib/supabase-server";
 import { VideoCameraIcon } from "@heroicons/react/24/outline";
 import { Analytics } from "@vercel/analytics/react";
 import { asc, eq, isNull } from "drizzle-orm";
 import Link from "next/link";
-import SupabaseListener from "../components/supabase-listener";
-import SupabaseProvider from "../components/supabase-provider";
 import "./globals.css";
 import { StoreInitalizer } from "./StoreInitalizer";
 import { notFound } from "next/navigation";
-import { SupabaseClient } from "@supabase/auth-helpers-nextjs";
-
-export type TypedSupabaseClient = SupabaseClient;
+import ClientProviders from "./ClientProviders";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 
 export const metadata = {
   title: "Rankdle",
@@ -32,11 +29,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = createServerClient();
-
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  const session = await getServerSession(authOptions);
 
   const currentDate = new Date();
   currentDate.setUTCHours(0, 0, 0, 0);
@@ -78,9 +71,7 @@ export default async function RootLayout({
       <StoreInitalizer rankdles={todaysRankdles} />
 
       <body>
-        <SupabaseProvider session={session}>
-          <SupabaseListener serverAccessToken={session?.access_token} />
-
+        <ClientProviders session={session}>
           <nav className="flex py-2 px-2 items-center justify-between">
             <Link href="/" className="text-center text-2xl">
               <strong>Rankdle</strong>{" "}
@@ -101,7 +92,7 @@ export default async function RootLayout({
           </nav>
 
           {children}
-        </SupabaseProvider>
+        </ClientProviders>
       </body>
     </html>
   );

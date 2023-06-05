@@ -2,7 +2,8 @@
 
 import { db } from "@/db/db";
 import { proposed } from "@/db/schema";
-import { createServerClient } from "@/lib/supabase-server";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import { getServerSession } from "next-auth";
 import { zfd } from "zod-form-data";
 
 // TODO: improve vaildation
@@ -15,12 +16,9 @@ const schema = zfd.formData({
 
 export async function submitClip(data: FormData) {
   const parsed = schema.safeParse(data);
-  const supabase = createServerClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const session = await getServerSession(authOptions);
 
-  if (!parsed.success || !user) {
+  if (!parsed.success || !session) {
     return;
   }
 
@@ -30,7 +28,7 @@ export async function submitClip(data: FormData) {
   await db.insert(proposed).values({
     youtubeId: youtube_id,
     trackerMatch: parsed.data.tracker.split("/").at(-1)!,
-    userId: user.id,
+    discordId: session.user.id,
     valorantId: parsed.data.val_id,
   });
 }

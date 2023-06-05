@@ -27,7 +27,7 @@ export default function Approve() {
       </p>
 
       <p>
-        proposed by <strong>{proposed[current].userId}</strong>
+        proposed by <strong>{proposed[current].discordId}</strong>
       </p>
 
       <iframe

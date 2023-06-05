@@ -1,12 +1,12 @@
 "use client";
 
-import { useSupabase } from "@/components/supabase-provider";
 import { cx } from "cva";
 import ClipRules from "./ClipRules";
 import { submitClip } from "./actions";
+import { useSession, signOut } from "next-auth/react";
 
 export default function Submit() {
-  const { supabase, session } = useSupabase();
+  const session = useSession();
 
   return (
     <main className="grid gap-2 max-w-2xl mx-auto px-2 pb-5">
@@ -15,21 +15,21 @@ export default function Submit() {
       <hr className="h-px my-3 bg-ctp-surface0 border-0" />
 
       <p>
-        Logged in as <strong>{session?.user.user_metadata.name}</strong>{" "}
-        <em>({session?.user.user_metadata.sub})</em>
+        Logged in as <strong>{session.data?.user.id}</strong>
+        <em>({session.data?.user.id})</em>
       </p>
 
       <button
+        disabled
         onClick={async () => {
           if (
             window.confirm(
               "Are you sure you want to delete your account? All data (including proposed or accepted clips and rank guesses) will be deleted."
             )
           ) {
-            const a = await supabase.rpc("delete_user");
+            await signOut();
 
-            if (a.error === null) await supabase.auth.signOut();
-            else window.alert("Something went wrong deleting your account...");
+            // window.alert("Something went wrong deleting your account...");
           }
         }}
       >

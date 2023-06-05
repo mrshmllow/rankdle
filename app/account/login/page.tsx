@@ -1,8 +1,8 @@
 "use client";
 
-import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { cx } from "cva";
 import { useState } from "react";
+import { signIn } from "next-auth/react";
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
@@ -14,14 +14,7 @@ export default function Login() {
       <button
         onClick={async () => {
           setLoading(true);
-          const supabase = createBrowserSupabaseClient();
-
-          await supabase.auth.signInWithOAuth({
-            provider: "discord",
-            options: {
-              redirectTo: "/account/complete",
-            },
-          });
+          signIn("discord");
         }}
         className={cx([
           "rounded-md py-2 px-4 w-full transition-colors",

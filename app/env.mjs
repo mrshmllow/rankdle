@@ -4,14 +4,15 @@ import { string } from "zod";
 export const env = createEnv({
   server: {
     DATABASE_URL: string().url(),
+    DISCORD_ID: string(),
+    DISCORD_SECRET: string(),
+    NEXTAUTH_SECRET: string(),
   },
-  client: {
-    NEXT_PUBLIC_SUPABASE_URL: string().url(),
-    NEXT_PUBLIC_SUPABASE_ANON_KEY: string(),
-  },
+  client: {},
   runtimeEnv: {
-    NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
-    NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     DATABASE_URL: process.env.DATABASE_URL,
+    DISCORD_SECRET: process.env.DISCORD_SECRET,
+    DISCORD_ID: process.env.DISCORD_ID,
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
   },
 });

@@ -54,8 +54,14 @@ export const proposed = pgTable("proposed", {
   createdAt: timestamp("created_at").defaultNow(),
   trackerMatch: uuid("tracker_match").notNull(),
   youtubeId: text("youtube_id").notNull(),
-  userId: uuid("user_id").notNull(),
+  discordId: uuid("discord_id").notNull(),
   valorantId: text("youtube_id").notNull(),
+});
+
+export const users = pgTable("users", {
+  id: serial("id").primaryKey(),
+  discordId: text("discord_id").notNull(),
+  isApprover: boolean("is_approver").notNull().default(false),
 });
 
 export type Rankdle = InferModel<typeof rankdles>;

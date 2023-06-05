@@ -36,6 +36,20 @@
       "when": 1685848064200,
       "tag": "0004_lucky_reavers",
       "breakpoints": false
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1685932218287,
+      "tag": "0005_fuzzy_rawhide_kid",
+      "breakpoints": false
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1685938980353,
+      "tag": "0006_flawless_songbird",
+      "breakpoints": false
     }
   ]
 }

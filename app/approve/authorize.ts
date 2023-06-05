@@ -1,16 +1,22 @@
-import { createServerClient } from "@/lib/supabase-server";
+import { db } from "@/db/db";
+import { users } from "@/db/schema";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import { eq } from "drizzle-orm";
+import { getServerSession } from "next-auth";
 
 export async function userIsApprover() {
-  const supabase = createServerClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const session = await getServerSession(authOptions);
 
-  if (user === null) {
+  if (session === null) {
     return false;
   }
 
-  const approver = user.app_metadata["approver"] as boolean | undefined;
+  const user = await db.query.users.findFirst({
+    where: eq(users.discordId, session.user.id),
+    columns: {
+      isApprover: true,
+    },
+  });
 
-  return approver === true;
+  return user ? user.isApprover : false;
 }
