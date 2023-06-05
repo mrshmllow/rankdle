@@ -15,7 +15,7 @@ export default function Submit() {
       <hr className="h-px my-3 bg-ctp-surface0 border-0" />
 
       <p>
-        Logged in as <strong>{session.data?.user.id}</strong>
+        Logged in as <strong>{session.data?.user.name}</strong>{" "}
         <em>({session.data?.user.id})</em>
       </p>
 
