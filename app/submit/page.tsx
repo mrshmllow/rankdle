@@ -20,20 +20,11 @@ export default function Submit() {
       </p>
 
       <button
-        disabled
         onClick={async () => {
-          if (
-            window.confirm(
-              "Are you sure you want to delete your account? All data (including proposed or accepted clips and rank guesses) will be deleted."
-            )
-          ) {
-            await signOut();
-
-            // window.alert("Something went wrong deleting your account...");
-          }
+          await signOut();
         }}
       >
-        Delete Account
+        Sign Out
       </button>
 
       <hr className="h-px mt-3 bg-ctp-surface0 border-0" />
